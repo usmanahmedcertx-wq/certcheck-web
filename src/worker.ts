@@ -9,8 +9,11 @@
  * into one. That single change is what makes build-once and flippable flags
  * possible, which is why it comes before the feature-flag act.
  */
+/** The assets binding, typed structurally: `@cloudflare/workers-types`
+ *  cannot be pulled in here, because its globals collide with the DOM
+ *  types the SPA in `main.ts` needs. */
 export interface Env {
-  ASSETS: Fetcher
+  ASSETS: { fetch(request: Request): Promise<Response> }
   ENVIRONMENT: string
   API_BASE: string
   BUILD_SHA?: string
