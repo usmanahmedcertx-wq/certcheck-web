@@ -1,0 +1,36 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "certcheck-web",
+  "main": "src/worker.ts",
+  "compatibility_date": "2026-09-01",
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    "not_found_handling": "single-page-application"
+  },
+  "observability": { "enabled": true },
+
+  "env": {
+    "dev": {
+      "name": "certcheck-web-dev",
+      "vars": {
+        "ENVIRONMENT": "dev",
+        "API_BASE": "https://certcheck-api-dev.certcheck.workers.dev"
+      }
+    },
+    "demo": {
+      "name": "certcheck-web-demo",
+      "vars": {
+        "ENVIRONMENT": "demo",
+        "API_BASE": "https://certcheck-api-demo.certcheck.workers.dev"
+      }
+    },
+    "prod": {
+      "name": "certcheck-web-prod",
+      "vars": {
+        "ENVIRONMENT": "prod",
+        "API_BASE": "https://certcheck-api-prod.certcheck.workers.dev"
+      }
+    }
+  }
+}
