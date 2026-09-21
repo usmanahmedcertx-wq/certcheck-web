@@ -5,6 +5,7 @@
  * comes from. Act 0 to 2 compile it in; Act 3 reads it at run time, and the
  * three build commands collapse into one.
  */
+import "./style.css"
 
 // ---- Act 0 to 2: compiled in by Vite. Act 3 replaces these three lines. ----
 const API_BASE = import.meta.env.VITE_API_BASE as string
