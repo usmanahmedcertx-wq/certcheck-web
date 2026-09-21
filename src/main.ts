@@ -77,13 +77,12 @@ async function render() {
     const section = el(`<section class="audit"><h2>${audit.title}</h2></section>`)
     const reqs = await api<Requirement[]>(`/audits/${audit.id}/requirements`)
     const table = el(`<table>
-      <thead><tr><th></th><th>Clause</th><th>Requirement</th><th>Status</th></tr></thead>
+      <thead><tr><th>Clause</th><th>Requirement</th><th>Status</th></tr></thead>
       <tbody></tbody></table>`)
     const tbody = table.querySelector("tbody")!
 
     for (const r of reqs) {
       const row = el(`<tr>
-        <td><input type="checkbox" class="pick" value="${r.id}"></td>
         <td class="mono">${r.clause}</td>
         <td>${r.text}</td>
         <td></td>
@@ -110,28 +109,6 @@ async function render() {
       tbody.append(row)
     }
     section.append(table)
-
-    // Feature C: post the selected ids. The endpoint ignores them.
-    const bulk = el(`<button class="bulk">Set selected to compliant</button>`)
-    bulk.addEventListener("click", async () => {
-      const ids = [...table.querySelectorAll<HTMLInputElement>("input.pick:checked")].map((c) =>
-        Number(c.value),
-      )
-      if (!ids.length) return
-      bulk.setAttribute("disabled", "")
-      try {
-        await api("/requirements/bulk-status", {
-          method: "POST",
-          body: JSON.stringify({ audit_id: audit.id, ids, status: "compliant" }),
-        })
-        await render()
-      } catch (err) {
-        alert(`Could not save: ${(err as Error).message}`)
-      } finally {
-        bulk.removeAttribute("disabled")
-      }
-    })
-    section.append(bulk)
     app.append(section)
   }
 }
